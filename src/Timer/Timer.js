@@ -11,7 +11,7 @@ const Timer = ({ btnClicked, handleRestartClicked }) => {
       const startTime = Date.now();
       timer = setInterval(() => {
         setRunningTime(Date.now() - startTime);
-      }, 100);
+      }, 10);
     } else {
       clearInterval(timer);
     }
@@ -22,7 +22,7 @@ const Timer = ({ btnClicked, handleRestartClicked }) => {
   }, [btnClicked]);
 
   const formatTime = (t) => {
-    return (t / 1000).toFixed(1);
+    return (t / 1000).toFixed(2);
   };
 
   const handleRestart = () => {
