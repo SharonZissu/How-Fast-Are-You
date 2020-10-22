@@ -18,93 +18,71 @@ function shuffle(a) {
   }
   return a;
 }
-const startingNumbers = shuffle([
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  21,
-  22,
-  23,
-  24,
-  25,
-]);
-const endingNumbers = shuffle([
-  26,
-  27,
-  28,
-  29,
-  30,
-  31,
-  32,
-  33,
-  34,
-  35,
-  36,
-  37,
-  38,
-  39,
-  40,
-  41,
-  42,
-  43,
-  44,
-  45,
-  46,
-  47,
-  48,
-  49,
-  50,
-]);
+
+const startingNumbers = [];
+const endingNumbers = [];
+for (let i = 1; i < 26; i++) {
+  startingNumbers.push({
+    number: i,
+    changed: false,
+    finish: false,
+  });
+}
+for (let i = 26; i < 51; i++) {
+  endingNumbers.push({
+    number: i,
+    changed: false,
+    finish: false,
+  });
+}
+
+shuffle(startingNumbers);
+shuffle(endingNumbers);
+
 function App() {
   const [count1, setCount1] = useState(1);
   const [count2, setCount2] = useState(26);
-  const [numbers, setNumbers] = useState(startingNumbers);
+  const [cells, setCells] = useState(startingNumbers);
   const [btnClicked, setBtnClicked] = useState(false);
 
-  const handleClick = (num) => {
-    if (numbers.every((number) => number === null)) {
+  const handleClick = ({ number }) => {
+    console.log(number);
+    if (cells.every((cell) => cell.number === null)) {
       setBtnClicked(false);
       console.log("Finish");
 
       return;
     }
-    if (num === 1 && btnClicked === false) {
+    if (number === 1 && btnClicked === false) {
       setBtnClicked(true);
     }
-    const numIndex = numbers.findIndex((number) => num == number);
-    console.log(numIndex);
-    const updateNumbers = [...numbers];
-    if (num > numbers.length && count2 === num) {
-      updateNumbers[numIndex] = null;
-      setNumbers(updateNumbers);
-      setCount2(num + 1);
-      if (count2 === numbers.length * 2) {
+    const updateCells = [...cells];
+
+    const numIndex = cells.findIndex((cell) => number == cell.number);
+    // console.log("FINDNUM:", findNum);
+    // const numIndex = findNum.index;
+    console.log("numIndex:", numIndex);
+    // console.log(updateCells[numIndex]);
+
+    // console.log(numIndex);
+
+    if (number > cells.length && count2 === number) {
+      updateCells[numIndex].number = null;
+      updateCells[numIndex].finish = true;
+
+      setCells(updateCells);
+      setCount2(number + 1);
+      if (count2 === cells.length * 2) {
         setBtnClicked(false);
       }
       return;
     } else {
-      if (num === count1) {
-        setCount1(num + 1);
-        setCount2(num + 1);
-        updateNumbers[numIndex] = endingNumbers.pop();
-        setNumbers(updateNumbers);
+      if (number === count1) {
+        setCount1(number + 1);
+        setCount2(number + 1);
+        updateCells[numIndex].number = endingNumbers.pop().number;
+        updateCells[numIndex].changed = true;
+        setCells(updateCells);
       }
     }
   };
@@ -112,17 +90,17 @@ function App() {
   return (
     <Container>
       <TextContainer>
-        <Title>How Fast Are You?</Title>
-        <Paragraph>Try to click from 1 to 50 with the best time!</Paragraph>
+        {/* <Title>How Fast Are You?</Title>
+        <Paragraph>Try to click from 1 to 50 with the best time!</Paragraph> */}
         {/* {btnClicked && (
         <Timer btnClicked={btnClicked} handleClick={handleClick} />
       )} */}
         <Timer btnClicked={btnClicked} handleClick={handleClick} />
       </TextContainer>
       <Board>
-        {numbers.map((num) => (
-          <Button key={uuid()} id={num} clicked={() => handleClick(num)}>
-            {num}
+        {cells.map((cell) => (
+          <Button key={uuid()} cell={cell} clicked={() => handleClick(cell)}>
+            {cell.number}
           </Button>
         ))}
       </Board>
@@ -155,7 +133,7 @@ html {
  
 
 body {
-  font-family: 'Courgette', cursive;
+  /* font-family: 'Courgette', cursive; */
   font-weight: 400;
   line-height: 1.6;
   color: black;
@@ -194,4 +172,7 @@ const Board = styled.div`
   margin: auto;
   margin-bottom: 5rem;
   vertical-align: middle;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
