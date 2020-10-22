@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
-const Timer = ({ btnClicked, handleClick }) => {
+const Timer = ({ btnClicked, handleRestartClicked }) => {
   const [runningTime, setRunningTime] = useState(0.0);
-  const [isRunning, setIsRunning] = useState(false);
   let timer = useRef();
 
   useEffect(() => {
@@ -22,27 +21,20 @@ const Timer = ({ btnClicked, handleClick }) => {
     };
   }, [btnClicked]);
 
-  const handleStartStopClick = () => {
-    if (btnClicked) {
-    } else {
-    }
-  };
-  //   const handleStartStopClick = () => {
-  //     if (btnClicked) {
-  //       clearInterval(timer);
-  //     } else {
-
-  //     }
-  //     handleClick();
-  //   };
-
   const formatTime = (t) => {
     return (t / 1000).toFixed(1);
+  };
+
+  const handleRestart = () => {
+    clearInterval(timer);
+    setRunningTime(0.0);
+    handleRestartClicked();
   };
   return (
     <TimerContainer>
       <ClockImg src={require("../images/clock.png")} alt="Timer" />
       <TimerText>{formatTime(runningTime)}</TimerText>
+      <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
     </TimerContainer>
   );
 };
@@ -65,6 +57,8 @@ const TimerText = styled.label`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
+const RestartBtn = styled.button``;
 
 // import React, { useEffect, useState, useRef } from "react";
 

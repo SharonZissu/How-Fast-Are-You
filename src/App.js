@@ -18,32 +18,43 @@ function shuffle(a) {
   }
   return a;
 }
-
-const startingNumbers = [];
 const endingNumbers = [];
-for (let i = 1; i < 26; i++) {
-  startingNumbers.push({
-    number: i,
-    changed: false,
-    finish: false,
-  });
-}
-for (let i = 26; i < 51; i++) {
-  endingNumbers.push({
-    number: i,
-    changed: false,
-    finish: false,
-  });
-}
-
-shuffle(startingNumbers);
-shuffle(endingNumbers);
 
 function App() {
   const [count1, setCount1] = useState(1);
   const [count2, setCount2] = useState(26);
-  const [cells, setCells] = useState(startingNumbers);
+  const [cells, setCells] = useState([]);
+  const [endingNumbers, setEndingNumbers] = useState([]);
   const [btnClicked, setBtnClicked] = useState(false);
+
+  useEffect(() => {
+    createBoard();
+  }, []);
+
+  const createBoard = () => {
+    const startingNumbers = [];
+    for (let i = 1; i < 26; i++) {
+      startingNumbers.push({
+        number: i,
+        changed: false,
+        finish: false,
+      });
+    }
+
+    for (let i = 26; i < 51; i++) {
+      endingNumbers.push({
+        number: i,
+        changed: false,
+        finish: false,
+      });
+    }
+    console.log(endingNumbers);
+    shuffle(startingNumbers);
+    shuffle(endingNumbers);
+
+    setCells(startingNumbers);
+    setEndingNumbers(endingNumbers);
+  };
 
   const handleClick = ({ number }) => {
     console.log(number);
@@ -57,15 +68,7 @@ function App() {
       setBtnClicked(true);
     }
     const updateCells = [...cells];
-
     const numIndex = cells.findIndex((cell) => number == cell.number);
-    // console.log("FINDNUM:", findNum);
-    // const numIndex = findNum.index;
-    console.log("numIndex:", numIndex);
-    // console.log(updateCells[numIndex]);
-
-    // console.log(numIndex);
-
     if (number > cells.length && count2 === number) {
       updateCells[numIndex].number = null;
       updateCells[numIndex].finish = true;
@@ -80,13 +83,20 @@ function App() {
       if (number === count1) {
         setCount1(number + 1);
         setCount2(number + 1);
-        updateCells[numIndex].number = endingNumbers.pop().number;
+        console.log(count1);
+        updateCells[numIndex].number = endingNumbers[count1 - 1].number;
         updateCells[numIndex].changed = true;
         setCells(updateCells);
       }
     }
   };
 
+  const handleRestartClicked = () => {
+    setBtnClicked(false);
+    createBoard();
+    setCount1(1);
+    setCount2(26);
+  };
   return (
     <Container>
       <TextContainer>
@@ -95,7 +105,10 @@ function App() {
         {/* {btnClicked && (
         <Timer btnClicked={btnClicked} handleClick={handleClick} />
       )} */}
-        <Timer btnClicked={btnClicked} handleClick={handleClick} />
+        <Timer
+          btnClicked={btnClicked}
+          handleRestartClicked={handleRestartClicked}
+        />
       </TextContainer>
       <Board>
         {cells.map((cell) => (
