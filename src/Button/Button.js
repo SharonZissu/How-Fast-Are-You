@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled, { keyframes, css } from "styled-components";
 
-const Button = ({ cell: { number, changed, finish }, clicked }) => {
+const Button = ({
+  cell: { number, changed, finish },
+  indexClicked,
+  clicked,
+}) => {
   //   console.log(cell);
+  console.log("indexClicked:", indexClicked);
   return (
-    <StyledButton changed={changed} finish={finish} onClick={clicked}>
+    <StyledButton
+      indexClicked={indexClicked}
+      changed={changed}
+      finish={finish}
+      onClick={clicked}
+    >
       {number}
     </StyledButton>
   );
@@ -12,12 +22,12 @@ const Button = ({ cell: { number, changed, finish }, clicked }) => {
 
 export default Button;
 
-const backgroundChanged = keyframes`
+const flash = keyframes`
 0% {
-    background-color: red;
+    opacity: 1;
 }
 100% {
-    background-color: #e3e2e2;
+    opacity: 0;
 }
 
 `;
@@ -30,10 +40,28 @@ const StyledButton = styled.button`
   border: 2px solid white;
   padding: auto;
   font-size: 4rem;
+  position: relative;
   /* font-family: inherit; */
   vertical-align: middle;
   &:focus {
     outline: none;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+  &:nth-child(${({ indexClicked }) => indexClicked + 1})::after {
+    animation: ${({ changed }) =>
+      changed &&
+      css`
+        ${flash} 1s linear
+      `};
   }
 
   @media (max-width: 600px) {

@@ -26,6 +26,7 @@ function App() {
   const [endCells, setEndingCells] = useState([]);
   const [btnClicked, setBtnClicked] = useState(false);
   const [gameFinish, setGameFinish] = useState(false);
+  const [indexClicked, setIndexClicked] = useState();
 
   useEffect(() => {
     createBoard();
@@ -74,6 +75,7 @@ function App() {
       updateCells[numIndex].finish = true;
       setCells(updateCells);
       setCount1(number + 1);
+      setIndexClicked(numIndex);
 
       //check if the user finish the game
       if (count1 === cells.length * 2) {
@@ -88,6 +90,7 @@ function App() {
         updateCells[numIndex].number = endCells[count1 - 1].number;
         updateCells[numIndex].changed = true;
         setCells(updateCells);
+        setIndexClicked(numIndex);
       }
     }
   };
@@ -110,9 +113,10 @@ function App() {
       </TextContainer>
       <GameContainer>
         <Board>
-          {cells.map((cell) => (
+          {cells.map((cell, i) => (
             <Button
               key={uuid()}
+              indexClicked={indexClicked}
               cell={cell}
               clicked={() => handleClick(cell.number)}
             >
@@ -217,9 +221,9 @@ const Board = styled.div`
   width: 50%;
   height: 75vh;
   @media (max-width: 600px) {
-    height: 35vh;
+    height: 50vh;
     order: 1;
-    margin-top: 5rem;
+    margin-top: 3rem;
   }
   /* background-color: red; */
   /* margin: auto; */

@@ -3,22 +3,21 @@ import styled from "styled-components";
 import Modal from "../Modal/Modal";
 
 const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
-  const [runningTime, setRunningTime] = useState(0.0);
-  let timer = useRef();
-
+  const [runningTime, setRunningTime] = useState(0);
+  let timer = useRef(null);
   useEffect(() => {
     if (btnClicked) {
       //   console.log("here in if..");
       const startTime = Date.now();
-      timer = setInterval(() => {
+      timer.current = setInterval(() => {
         setRunningTime(Date.now() - startTime);
-      }, 10);
+      }, 50);
     } else {
-      clearInterval(timer);
+      clearInterval(timer.current);
     }
 
     return () => {
-      clearInterval(timer);
+      clearInterval(timer.current);
     };
   }, [btnClicked]);
 
@@ -27,8 +26,8 @@ const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
   };
 
   const handleRestart = () => {
-    clearInterval(timer);
     setRunningTime(0.0);
+    clearInterval(timer.current);
     handleRestartClicked();
   };
   return (
@@ -38,7 +37,7 @@ const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
         <TimerText>{formatTime(runningTime)}</TimerText>
         <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
       </TimerContainer>
-      <Modal show={gameFinish} />
+      {/* <Modal show={gameFinish} /> */}
     </>
   );
 };
