@@ -18,23 +18,25 @@ function shuffle(a) {
   }
   return a;
 }
-const endingNumbers = [];
 
 function App() {
   const [count1, setCount1] = useState(1);
-  const [count2, setCount2] = useState(26);
+  // const [count2, setCount2] = useState(1);
   const [cells, setCells] = useState([]);
-  const [endingNumbers, setEndingNumbers] = useState([]);
+  const [endCells, setEndingCells] = useState([]);
   const [btnClicked, setBtnClicked] = useState(false);
+  const [gameFinish, setGameFinish] = useState(false);
 
   useEffect(() => {
     createBoard();
   }, []);
 
   const createBoard = () => {
-    const startingNumbers = [];
+    const startingCells = [];
+    const endCells = [];
+    //
     for (let i = 1; i < 26; i++) {
-      startingNumbers.push({
+      startingCells.push({
         number: i,
         changed: false,
         finish: false,
@@ -42,49 +44,48 @@ function App() {
     }
 
     for (let i = 26; i < 51; i++) {
-      endingNumbers.push({
+      endCells.push({
         number: i,
         changed: false,
         finish: false,
       });
     }
-    console.log(endingNumbers);
-    shuffle(startingNumbers);
-    shuffle(endingNumbers);
+    console.log(endCells);
+    shuffle(startingCells);
+    shuffle(endCells);
 
-    setCells(startingNumbers);
-    setEndingNumbers(endingNumbers);
+    setCells(startingCells);
+    setEndingCells(endCells);
   };
 
-  const handleClick = ({ number }) => {
-    console.log(number);
-    if (cells.every((cell) => cell.number === null)) {
-      setBtnClicked(false);
-      console.log("Finish");
-
-      return;
-    }
+  const handleClick = (number) => {
+    console.log("clicked");
+    //check if the user start the game (when he clicked on 1)
     if (number === 1 && btnClicked === false) {
       setBtnClicked(true);
     }
+
     const updateCells = [...cells];
     const numIndex = cells.findIndex((cell) => number == cell.number);
-    if (number > cells.length && count2 === number) {
+
+    //check the 2nd round which start from 26
+    if (number > cells.length && count1 === number) {
       updateCells[numIndex].number = null;
       updateCells[numIndex].finish = true;
-
       setCells(updateCells);
-      setCount2(number + 1);
-      if (count2 === cells.length * 2) {
+      setCount1(number + 1);
+
+      //check if the user finish the game
+      if (count1 === cells.length * 2) {
         setBtnClicked(false);
+        setGameFinish(true);
+        return;
       }
-      return;
     } else {
+      //check the 1st round which start from 1
       if (number === count1) {
         setCount1(number + 1);
-        setCount2(number + 1);
-        console.log(count1);
-        updateCells[numIndex].number = endingNumbers[count1 - 1].number;
+        updateCells[numIndex].number = endCells[count1 - 1].number;
         updateCells[numIndex].changed = true;
         setCells(updateCells);
       }
@@ -95,8 +96,8 @@ function App() {
     setBtnClicked(false);
     createBoard();
     setCount1(1);
-    setCount2(26);
   };
+
   return (
     <Container>
       <TextContainer>
@@ -105,18 +106,27 @@ function App() {
         {/* {btnClicked && (
         <Timer btnClicked={btnClicked} handleClick={handleClick} />
       )} */}
+        <Title>How Fast Are You?</Title>
+      </TextContainer>
+      <GameContainer>
+        <Board>
+          {cells.map((cell) => (
+            <Button
+              key={uuid()}
+              cell={cell}
+              clicked={() => handleClick(cell.number)}
+            >
+              {cell.number}
+            </Button>
+          ))}
+        </Board>
+
         <Timer
           btnClicked={btnClicked}
           handleRestartClicked={handleRestartClicked}
+          gameFinish={gameFinish}
         />
-      </TextContainer>
-      <Board>
-        {cells.map((cell) => (
-          <Button key={uuid()} cell={cell} clicked={() => handleClick(cell)}>
-            {cell.number}
-          </Button>
-        ))}
-      </Board>
+      </GameContainer>
       <GlobalStyle />
     </Container>
   );
@@ -159,11 +169,13 @@ body {
 `;
 
 const Container = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   width: 100vw;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; */
+  overflow: hidden;
+  position: relative;
 `;
 
 const TextContainer = styled.div`
@@ -171,19 +183,47 @@ const TextContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background-color: #f68d69;
+  height: 25vh;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
+  @media (max-width: 600px) {
+    height: 15vh;
+  }
 `;
 
 const Paragraph = styled.p``;
 const Title = styled.h1`
   font-size: 6rem;
+  @media (max-width: 600px) {
+    font-size: 4rem;
+  }
+`;
+
+const GameContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    padding: 1rem;
+
+    /* height: 70vh; */
+  }
+  /* justify-content: space-between; */
 `;
 
 const Board = styled.div`
   width: 50%;
-  height: 60vh;
+  height: 75vh;
+  @media (max-width: 600px) {
+    height: 35vh;
+    order: 1;
+    margin-top: 5rem;
+  }
   /* background-color: red; */
-  margin: auto;
-  margin-bottom: 5rem;
+  /* margin: auto; */
+  /* margin-bottom: 5rem; */
   vertical-align: middle;
   @media (max-width: 600px) {
     width: 100%;
