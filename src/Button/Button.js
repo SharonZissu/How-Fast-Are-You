@@ -46,6 +46,7 @@ const pulsate = keyframes`
     box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.25);
     background-color: red;
     z-index: 5;
+    border: 2px solid black;
   }
   100% {
     transform: scale(1);
@@ -62,6 +63,7 @@ const StyledButton = styled.button`
   border: 2px solid white;
   padding: auto;
   font-size: 4rem;
+  font-family: inherit;
   position: relative;
   /* font-family: inherit; */
   vertical-align: middle;

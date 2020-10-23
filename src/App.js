@@ -128,6 +128,7 @@ function App() {
         <Timer btnClicked={btnClicked} handleClick={handleClick} />
       )} */}
         <Title>How Fast Are You?</Title>
+        <SubTitle>Touching from 1 to 50 as fast as you can</SubTitle>
       </TextContainer>
       <GameContainer>
         <Board>
@@ -152,6 +153,7 @@ function App() {
           gameFinish={gameFinish}
           handleFindHelperClicked={handleFindHelperClicked}
           findHelperIsClicked={findHelperIsClicked}
+          count={count1}
         />
         <Modal show={gameFinish} />
       </GameContainer>
@@ -163,7 +165,7 @@ function App() {
 export default App;
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -184,8 +186,9 @@ html {
  
 
 body {
+  font-family: 'Syne Mono', monospace;
   /* font-family: 'Courgette', cursive; */
-  font-weight: 400;
+  /* font-weight: 100; */
   line-height: 1.6;
   color: black;
   
@@ -214,17 +217,23 @@ const TextContainer = styled.div`
   overflow: hidden;
   background-color: #f68d69;
   height: 25vh;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
+  /* clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%); */
   @media (max-width: 600px) {
     height: 15vh;
   }
 `;
 
-const Paragraph = styled.p``;
 const Title = styled.h1`
   font-size: 6rem;
   @media (max-width: 600px) {
-    font-size: 4rem;
+    font-size: 3rem;
+  }
+`;
+
+const SubTitle = styled.p`
+  @media (max-width: 600px) {
+    font-size: 1.6rem;
+    font-weight: 100;
   }
 `;
 
@@ -247,7 +256,7 @@ const Board = styled.div`
   @media (max-width: 600px) {
     height: 50vh;
     order: 1;
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
   /* background-color: red; */
   /* margin: auto; */

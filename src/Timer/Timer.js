@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import Modal from "../Modal/Modal";
 
 const Timer = ({
@@ -8,6 +8,7 @@ const Timer = ({
   gameFinish,
   handleFindHelperClicked,
   findHelperIsClicked,
+  count,
 }) => {
   const [runningTime, setRunningTime] = useState(0);
   const [fiveSecHelperIsClicked, setFiveSecHelperIsClicked] = useState(false);
@@ -55,10 +56,13 @@ const Timer = ({
   // }
   return (
     <>
-      <TimerContainer>
+      <TimerContainer animate={fiveSecHelperIsClicked}>
         <ClockImg src={require("../images/clock.png")} alt="Timer" />
         <TimerText>{formatTime(runningTime)}</TimerText>
-        <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
+        <NextNumber>{count}</NextNumber>
+        <GameDetails>
+          <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
+        </GameDetails>
         <HelpersBtns>
           <FindBtn
             onClick={handleFindHelperClicked}
@@ -81,17 +85,53 @@ const Timer = ({
 
 export default Timer;
 
+const showFiveSec = keyframes` 
+  0% {
+    opacity: 0;
+    /* box-shadow: none; */
+
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(7rem);
+
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(7rem);
+
+  }
+`;
+
 const TimerContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  &::after {
+    content: "-5:00";
+    position: absolute;
+    color: #438c4c;
+    top: 20%;
+    left: 60%;
+    font-size: 2rem;
+    opacity: 0;
+    animation: ${({ animate }) =>
+      animate &&
+      css`
+        ${showFiveSec} 1.5s linear
+      `};
+  }
 `;
+
 const ClockImg = styled.img`
   height: 60rem;
   width: 60rem;
   background-color: transparent;
+
   @media (max-width: 600px) {
     /* font-size: 4rem;
     position: absolute;
@@ -111,15 +151,10 @@ const TimerText = styled.label`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
-
-const RestartBtn = styled.button`
-  padding: 1rem 2rem;
-  border: none;
-  font-size: 3rem;
-  background-color: #f26767;
+const GameDetails = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 2rem;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
-  border-radius: 0.4rem;
 `;
 
 const HelpersBtns = styled.div`
@@ -132,18 +167,41 @@ const Btn = styled.button`
   padding: 1rem 2rem;
   margin-right: 1rem;
   font-size: 2rem;
+  font-family: inherit;
+  text-transform: uppercase;
+  border-radius: 0.4rem;
+
   &:focus {
     outline: none;
   }
 `;
+
+const RestartBtn = styled(Btn)`
+  font-size: 2.5rem;
+  background-color: #f26767;
+  /* box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); */
+  margin-right: 1rem;
+  font-family: inherit;
+`;
+
 const FindBtn = styled(Btn)`
-  background-color: ${({ helper }) => (helper ? "red" : "grey")};
+  background-color: ${({ helper }) => (helper ? "#686f87" : "#aca9a9")};
   text-decoration: ${({ helper }) => (helper ? "none" : "line-through")};
+`;
+
+const NextNumber = styled.label`
+  font-size: 3rem;
+  padding: 0.4rem 2rem;
+  border: 2px solid #f68d69;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  bottom: 30%;
 `;
 const FiveSecBtn = styled(Btn)`
   margin: 0;
   background-color: ${({ runningTime, fiveSecClicked }) =>
-    runningTime > 5000 && !fiveSecClicked ? "green" : "grey"};
+    runningTime > 5000 && !fiveSecClicked ? "#438c4c" : "#aca9a9"};
   text-decoration: ${({ runningTime, fiveSecClicked }) =>
     runningTime > 5000 && !fiveSecClicked ? "none" : "line-through"};
 `;
