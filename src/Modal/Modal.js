@@ -20,7 +20,7 @@ const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
     imgName = require(`../images/sloth.jpg`);
     title = "You can do better! Sloth!";
   } else {
-    imgName = require(`../images/sloth.jpg`);
+    imgName = require(`../images/turtle.jpg`);
     title = "You are so slow! Turtle!";
   }
 
