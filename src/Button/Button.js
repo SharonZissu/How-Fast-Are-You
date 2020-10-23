@@ -5,6 +5,9 @@ const Button = ({
   cell: { number, changed, finish },
   indexClicked,
   clicked,
+  count,
+  findHelperIsClicked,
+  findHelperIndex,
 }) => {
   //   console.log(cell);
   console.log("indexClicked:", indexClicked);
@@ -14,6 +17,7 @@ const Button = ({
       changed={changed}
       finish={finish}
       onClick={clicked}
+      findHelperIndex={findHelperIndex + 1}
     >
       {number}
     </StyledButton>
@@ -29,8 +33,26 @@ const flash = keyframes`
 100% {
     opacity: 0;
 }
-
 `;
+
+const pulsate = keyframes` 
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.25);
+    background-color: red;
+    z-index: 5;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+`;
+
 const StyledButton = styled.button`
   width: 20%;
   height: 20%;
@@ -57,11 +79,16 @@ const StyledButton = styled.button`
     opacity: 0;
   }
   &:nth-child(${({ indexClicked }) => indexClicked + 1})::after {
-    animation: ${({ changed }) =>
+    animation: ${({ changed, findHelperIndex }) =>
       changed &&
+      findHelperIndex === -1 &&
       css`
         ${flash} 1s linear
       `};
+  }
+
+  &:nth-child(${({ findHelperIndex }) => findHelperIndex}) {
+    animation: ${pulsate} 1s 3;
   }
 
   @media (max-width: 600px) {

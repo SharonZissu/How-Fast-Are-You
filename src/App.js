@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import Button from "./Button/Button";
 import { uuid } from "uuidv4";
+import Modal from "./Modal/Modal";
 
 function shuffle(a) {
   var j, x, i;
@@ -27,6 +28,8 @@ function App() {
   const [btnClicked, setBtnClicked] = useState(false);
   const [gameFinish, setGameFinish] = useState(false);
   const [indexClicked, setIndexClicked] = useState();
+  const [findHelperIsClicked, setFindHelperIsClicked] = useState(false);
+  const [findHelperIndex, setFindHelperIndex] = useState(-1);
 
   useEffect(() => {
     createBoard();
@@ -66,6 +69,10 @@ function App() {
       setBtnClicked(true);
     }
 
+    if (findHelperIndex !== -1 && number === cells[findHelperIndex].number) {
+      setFindHelperIndex(-1);
+    }
+
     const updateCells = [...cells];
     const numIndex = cells.findIndex((cell) => number == cell.number);
 
@@ -99,6 +106,17 @@ function App() {
     setBtnClicked(false);
     createBoard();
     setCount1(1);
+    setFindHelperIsClicked(false);
+    setFindHelperIndex(-1);
+  };
+
+  const handleFindHelperClicked = () => {
+    if (findHelperIsClicked === false) {
+      setFindHelperIsClicked(true);
+      const findIndex = cells.findIndex((cell) => cell.number === count1);
+      setFindHelperIndex(findIndex);
+      console.log(findIndex);
+    }
   };
 
   return (
@@ -119,6 +137,9 @@ function App() {
               indexClicked={indexClicked}
               cell={cell}
               clicked={() => handleClick(cell.number)}
+              count={count1}
+              findHelperIsClicked={findHelperIsClicked}
+              findHelperIndex={findHelperIndex}
             >
               {cell.number}
             </Button>
@@ -129,7 +150,10 @@ function App() {
           btnClicked={btnClicked}
           handleRestartClicked={handleRestartClicked}
           gameFinish={gameFinish}
+          handleFindHelperClicked={handleFindHelperClicked}
+          findHelperIsClicked={findHelperIsClicked}
         />
+        <Modal show={gameFinish} />
       </GameContainer>
       <GlobalStyle />
     </Container>

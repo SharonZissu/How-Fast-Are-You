@@ -2,8 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Modal from "../Modal/Modal";
 
-const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
+const Timer = ({
+  btnClicked,
+  handleRestartClicked,
+  gameFinish,
+  handleFindHelperClicked,
+  findHelperIsClicked,
+}) => {
   const [runningTime, setRunningTime] = useState(0);
+  const [fiveSecHelperIsClicked, setFiveSecHelperIsClicked] = useState(false);
   let timer = useRef(null);
   useEffect(() => {
     if (btnClicked) {
@@ -22,7 +29,11 @@ const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
   }, [btnClicked]);
 
   const formatTime = (t) => {
-    return (t / 1000).toFixed(2);
+    if (!fiveSecHelperIsClicked) {
+      return (t / 1000).toFixed(2);
+    } else {
+      return (t / 1000 - 5).toFixed(2);
+    }
   };
 
   const handleRestart = () => {
@@ -30,14 +41,39 @@ const Timer = ({ btnClicked, handleRestartClicked, gameFinish }) => {
     clearInterval(timer.current);
     handleRestartClicked();
   };
+
+  const handleFiveSecHelperClicked = () => {
+    if (fiveSecHelperIsClicked === false && runningTime > 5000) {
+      setFiveSecHelperIsClicked(true);
+    }
+  };
+
+  // const formatTimeMinusFive = () => {
+  //   return ((t / 1000)- 5000).toFixed(2);
+
+  // }
   return (
     <>
       <TimerContainer>
         <ClockImg src={require("../images/clock.png")} alt="Timer" />
         <TimerText>{formatTime(runningTime)}</TimerText>
         <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
+        <HelpersBtns>
+          <FindBtn
+            onClick={handleFindHelperClicked}
+            helper={!findHelperIsClicked}
+          >
+            Find
+          </FindBtn>
+          <FiveSecBtn
+            onClick={handleFiveSecHelperClicked}
+            fiveSecClicked={fiveSecHelperIsClicked}
+            runningTime={runningTime}
+          >
+            -5 Sec
+          </FiveSecBtn>
+        </HelpersBtns>
       </TimerContainer>
-      {/* <Modal show={gameFinish} /> */}
     </>
   );
 };
@@ -70,7 +106,7 @@ const ClockImg = styled.img`
 const TimerText = styled.label`
   font-size: 4rem;
   position: absolute;
-  top: 44%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
@@ -84,6 +120,35 @@ const RestartBtn = styled.button`
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
   border-radius: 0.4rem;
 `;
+
+const HelpersBtns = styled.div`
+  display: flex;
+  margin-top: 1rem;
+`;
+
+const Btn = styled.button`
+  border: none;
+  padding: 1rem 2rem;
+  margin-right: 1rem;
+  font-size: 2rem;
+  &:focus {
+    outline: none;
+  }
+`;
+const FindBtn = styled(Btn)`
+  background-color: ${({ helper }) => (helper ? "red" : "grey")};
+  text-decoration: ${({ helper }) => (helper ? "none" : "line-through")};
+`;
+const FiveSecBtn = styled(Btn)`
+  margin: 0;
+  background-color: ${({ runningTime, fiveSecClicked }) =>
+    runningTime > 5000 && !fiveSecClicked ? "green" : "grey"};
+  text-decoration: ${({ runningTime, fiveSecClicked }) =>
+    runningTime > 5000 && !fiveSecClicked ? "none" : "line-through"};
+`;
+// const FindBtn = styled(FindBtn)`
+//   background-color: blue;
+// `;
 
 // import React, { useEffect, useState, useRef } from "react";
 
