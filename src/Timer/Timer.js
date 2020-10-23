@@ -39,6 +39,7 @@ const Timer = ({
   const handleRestart = () => {
     setRunningTime(0.0);
     clearInterval(timer.current);
+    setFiveSecHelperIsClicked(false);
     handleRestartClicked();
   };
 
