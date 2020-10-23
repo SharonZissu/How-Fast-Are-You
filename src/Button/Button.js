@@ -13,7 +13,7 @@ const Button = ({
   console.log("indexClicked:", indexClicked);
   return (
     <StyledButton
-      indexClicked={indexClicked}
+      indexClicked={indexClicked + 1}
       changed={changed}
       finish={finish}
       onClick={clicked}
@@ -80,10 +80,10 @@ const StyledButton = styled.button`
     left: 0;
     opacity: 0;
   }
-  &:nth-child(${({ indexClicked }) => indexClicked + 1})::after {
+  &:nth-child(${({ indexClicked }) => indexClicked})::after {
     animation: ${({ changed, findHelperIndex }) =>
       changed &&
-      findHelperIndex === -1 &&
+      findHelperIndex === 0 &&
       css`
         ${flash} 1s linear
       `};

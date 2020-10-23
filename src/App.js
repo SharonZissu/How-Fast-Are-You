@@ -226,7 +226,7 @@ const TextContainer = styled.div`
 const Title = styled.h1`
   font-size: 6rem;
   @media (max-width: 600px) {
-    font-size: 3rem;
+    font-size: 3.7rem;
   }
 `;
 

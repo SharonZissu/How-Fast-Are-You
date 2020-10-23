@@ -147,7 +147,7 @@ const ClockImg = styled.img`
 const TimerText = styled.label`
   font-size: 4rem;
   position: absolute;
-  top: 38%;
+  top: 39%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
