@@ -44,7 +44,7 @@ const pulsate = keyframes`
   50% {
     transform: scale(1.1);
     box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.25);
-    background-color: red;
+    background-color: #686f87;
     z-index: 5;
     border: 2px solid black;
   }

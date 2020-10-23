@@ -108,6 +108,7 @@ function App() {
     setCount1(1);
     setFindHelperIsClicked(false);
     setFindHelperIndex(-1);
+    setGameFinish(false);
   };
 
   const handleFindHelperClicked = () => {
@@ -155,7 +156,6 @@ function App() {
           findHelperIsClicked={findHelperIsClicked}
           count={count1}
         />
-        <Modal show={gameFinish} />
       </GameContainer>
       <GlobalStyle />
     </Container>
@@ -253,6 +253,7 @@ const GameContainer = styled.div`
 const Board = styled.div`
   width: 50%;
   height: 75vh;
+  /* opacity: 0; */
   @media (max-width: 600px) {
     height: 50vh;
     order: 1;

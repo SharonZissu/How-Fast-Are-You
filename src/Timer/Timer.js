@@ -59,7 +59,7 @@ const Timer = ({
       <TimerContainer animate={fiveSecHelperIsClicked}>
         <ClockImg src={require("../images/clock.png")} alt="Timer" />
         <TimerText>{formatTime(runningTime)}</TimerText>
-        <NextNumber>{count}</NextNumber>
+        <NextNumber>{count === 51 ? "50" : count}</NextNumber>
         <GameDetails>
           <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
         </GameDetails>
@@ -78,6 +78,11 @@ const Timer = ({
             -5 Sec
           </FiveSecBtn>
         </HelpersBtns>
+        <Modal
+          show={gameFinish}
+          runningTime={runningTime}
+          fiveSecHelperIsClicked={fiveSecHelperIsClicked}
+        />
       </TimerContainer>
     </>
   );
