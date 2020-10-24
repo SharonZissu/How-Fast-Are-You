@@ -8,7 +8,7 @@ import { createGlobalStyle } from "styled-components";
 import Button from "./Button/Button";
 import { uuid } from "uuidv4";
 import Modal from "./Modal/Modal";
-import TimesBar from "./TimesBar/TimesBar";
+import Sidebar from "./Sidebar/Sidebar";
 
 function shuffle(a) {
   var j, x, i;
@@ -132,7 +132,8 @@ function App() {
 
   return (
     <Container>
-      <TimesBar />
+      <Sidebar type="times" />
+      <Sidebar type="rules" />
       <TextContainer>
         {/* <Title>How Fast Are You?</Title>
         <Paragraph>Try to click from 1 to 50 with the best time!</Paragraph> */}

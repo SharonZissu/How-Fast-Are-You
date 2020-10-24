@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Backdrop = ({ show, exitTimerBar }) => {
-  return <Container show={show} onClick={exitTimerBar}></Container>;
+const Backdrop = ({ show, exitSiderBar }) => {
+  return <Container show={show} onClick={exitSiderBar}></Container>;
 };
 
 export default Backdrop;
