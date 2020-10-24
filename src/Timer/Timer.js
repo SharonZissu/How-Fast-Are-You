@@ -12,13 +12,22 @@ const Timer = ({
 }) => {
   const [runningTime, setRunningTime] = useState(0);
   const [fiveSecHelperIsClicked, setFiveSecHelperIsClicked] = useState(false);
+  const [average, setAverage] = useState(0);
+  const [animal, setAnimal] = useState("");
+  const [animalName, setAnimalName] = useState("chita");
+  let averageTimer = useRef(null);
+  let animalsTimer = useRef(null);
   let timer = useRef(null);
+  let restart = useRef(null);
   useEffect(() => {
     if (btnClicked) {
       //   console.log("here in if..");
       const startTime = Date.now();
       timer.current = setInterval(() => {
+        // console.log(((Date.now() - startTime) / 1000).toFixed(2) / count);
         setRunningTime(Date.now() - startTime);
+        let average = ((Date.now() - startTime) / 1000).toFixed(2) / count;
+        // console.log(average);
       }, 50);
     } else {
       clearInterval(timer.current);
@@ -26,8 +35,46 @@ const Timer = ({
 
     return () => {
       clearInterval(timer.current);
+      // clearTimeout(restart.current);
     };
   }, [btnClicked]);
+
+  useEffect(() => {
+    if (btnClicked) {
+      averageTimer.current = setInterval(() => {
+        console.log("count", count);
+        console.log("runningTime", runningTime);
+        setAverage((runningTime / 1000).toFixed(2) / count);
+        let checkAverage = (runningTime / 1000).toFixed(2) / count;
+        console.log("checkAverage:", checkAverage);
+        let color;
+        let animalName;
+        if (checkAverage <= 0.6) {
+          color = "purple";
+          animalName = "chita";
+        } else if (checkAverage <= 0.9) {
+          color = "yellow";
+          animalName = "gnu";
+        } else if (checkAverage <= 1.2) {
+          color = "blue";
+          animalName = "horse";
+        } else if (checkAverage <= 1.6) {
+          color = "green";
+          animalName = "sloth";
+        } else {
+          color = "brown";
+          animalName = "turtle";
+        }
+        setAnimal(color);
+        setAnimalName(animalName);
+      }, 50);
+    }
+
+    return () => {
+      clearInterval(averageTimer.current);
+    };
+  }, [count]);
+  // }, [count, runningTime]);
 
   const formatTime = (t) => {
     if (!fiveSecHelperIsClicked) {
@@ -38,14 +85,21 @@ const Timer = ({
   };
 
   const handleRestart = () => {
-    setRunningTime(0.0);
     clearInterval(timer.current);
     setFiveSecHelperIsClicked(false);
+    setAnimalName("chita");
     handleRestartClicked();
+    if (gameFinish) {
+      restart.current = setTimeout(() => {
+        setRunningTime(0.0);
+      }, 1000);
+    } else {
+      setRunningTime(0.0);
+    }
   };
 
   const handleFiveSecHelperClicked = () => {
-    if (fiveSecHelperIsClicked === false && runningTime > 5000) {
+    if (!fiveSecHelperIsClicked && runningTime <= 20000 && count > 25) {
       setFiveSecHelperIsClicked(true);
     }
   };
@@ -54,16 +108,18 @@ const Timer = ({
   //   return ((t / 1000)- 5000).toFixed(2);
 
   // }
+
   return (
     <>
       <TimerContainer animate={fiveSecHelperIsClicked}>
-        <ClockImg src={require("../images/clock.png")} alt="Timer" />
         <TimerText>{formatTime(runningTime)}</TimerText>
         <NextNumber>{count === 51 ? "50" : count}</NextNumber>
         <GameDetails>
-          <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
+          <ClockImg src={require("../images/clock.png")} alt="Timer" />
         </GameDetails>
         <HelpersBtns>
+          <RestartBtn onClick={handleRestart}>Restart</RestartBtn>
+
           <FindBtn
             onClick={handleFindHelperClicked}
             helper={!findHelperIsClicked}
@@ -72,12 +128,19 @@ const Timer = ({
           </FindBtn>
           <FiveSecBtn
             onClick={handleFiveSecHelperClicked}
-            fiveSecClicked={fiveSecHelperIsClicked}
-            runningTime={runningTime}
+            show={!fiveSecHelperIsClicked && runningTime <= 20000 && count > 25}
           >
             -5 Sec
           </FiveSecBtn>
         </HelpersBtns>
+        <AnimateContainer>
+          <AnimaleMoving
+            src={require(`../images/${animalName}-logo.png`)}
+            animal={animal}
+            count={count - 1}
+          />
+          <FinishFlag src={require("../images/finish-flag.png")} />
+        </AnimateContainer>
         <Modal
           show={gameFinish}
           runningTime={runningTime}
@@ -143,22 +206,22 @@ const ClockImg = styled.img`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); */
-    height: 20rem;
-    width: 20rem;
-    margin-top: 2rem;
+    height: 17rem;
+    width: 17rem;
+    /* margin-top: 2rem; */
   }
 `;
 
 const TimerText = styled.label`
-  font-size: 4rem;
+  font-size: 3rem;
   position: absolute;
-  top: 39%;
+  top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
 const GameDetails = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 2rem;
 `;
 
@@ -201,14 +264,43 @@ const NextNumber = styled.label`
   border-radius: 50%;
   position: absolute;
   left: 0;
-  bottom: 30%;
+  bottom: 50%;
 `;
 const FiveSecBtn = styled(Btn)`
   margin: 0;
-  background-color: ${({ runningTime, fiveSecClicked }) =>
-    runningTime > 5000 && !fiveSecClicked ? "#438c4c" : "#aca9a9"};
-  text-decoration: ${({ runningTime, fiveSecClicked }) =>
-    runningTime > 5000 && !fiveSecClicked ? "none" : "line-through"};
+  background-color: ${({ show }) => (show ? "#438c4c" : "#aca9a9")};
+  text-decoration: ${({ show }) => (show ? "none" : "line-through")};
+`;
+
+const AnimateContainer = styled.div`
+  /* background-color: red; */
+  margin-top: 1rem;
+  height: 10rem;
+  width: 99%;
+  /* display: flex; */
+  /* justify-content: flex-start; */
+  background-image: url(${require("../images/field.png")});
+  background-size: 100% 100%;
+  position: relative;
+  /* text-align: start; */
+`;
+
+const AnimaleMoving = styled.img`
+  height: 8rem;
+  width: 12rem;
+  margin-top: 2rem;
+  transition: all 0.3s;
+  transform: ${({ count }) =>
+    css`
+        translateX(${count * 4}%) 
+      `};
+`;
+
+const FinishFlag = styled.img`
+  height: 8rem;
+  width: 4rem;
+  position: absolute;
+  right: 5%;
 `;
 // const FindBtn = styled(FindBtn)`
 //   background-color: blue;

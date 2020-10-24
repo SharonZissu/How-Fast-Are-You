@@ -8,6 +8,7 @@ import { createGlobalStyle } from "styled-components";
 import Button from "./Button/Button";
 import { uuid } from "uuidv4";
 import Modal from "./Modal/Modal";
+import TimesBar from "./TimesBar/TimesBar";
 
 function shuffle(a) {
   var j, x, i;
@@ -30,9 +31,14 @@ function App() {
   const [indexClicked, setIndexClicked] = useState();
   const [findHelperIsClicked, setFindHelperIsClicked] = useState(false);
   const [findHelperIndex, setFindHelperIndex] = useState(-1);
+  let restart = useRef(null);
 
   useEffect(() => {
     createBoard();
+
+    // return () => {
+    //   clearTimeout(restart.current);
+    // };
   }, []);
 
   const createBoard = () => {
@@ -109,6 +115,10 @@ function App() {
     setFindHelperIsClicked(false);
     setFindHelperIndex(-1);
     setGameFinish(false);
+
+    // restart.current = setTimeout(() => {
+    //   setGameFinish(false);
+    // }, 1000);
   };
 
   const handleFindHelperClicked = () => {
@@ -122,6 +132,7 @@ function App() {
 
   return (
     <Container>
+      <TimesBar />
       <TextContainer>
         {/* <Title>How Fast Are You?</Title>
         <Paragraph>Try to click from 1 to 50 with the best time!</Paragraph> */}
@@ -193,7 +204,7 @@ body {
   color: black;
   
   /* height: 100vh; */
-  text-align: center;
+  /* text-align: center; */
 
 }
 
@@ -216,23 +227,19 @@ const TextContainer = styled.div`
   justify-content: center;
   overflow: hidden;
   background-color: #f68d69;
-  height: 25vh;
-  /* clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%); */
-  @media (max-width: 600px) {
-    height: 15vh;
-  }
+  padding: 2rem;
 `;
 
 const Title = styled.h1`
   font-size: 6rem;
   @media (max-width: 600px) {
-    font-size: 3.7rem;
+    font-size: 3.2rem;
   }
 `;
 
 const SubTitle = styled.p`
   @media (max-width: 600px) {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 100;
   }
 `;
@@ -257,7 +264,7 @@ const Board = styled.div`
   @media (max-width: 600px) {
     height: 50vh;
     order: 1;
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
   }
   /* background-color: red; */
   /* margin: auto; */
