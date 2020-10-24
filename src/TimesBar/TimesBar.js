@@ -60,7 +60,7 @@ const Container = styled.div`
   /* height: 6rem; */
   z-index: 500;
   background-color: #f68d69;
-  top: 18%;
+  top: 20%;
   right: 0;
   /* transition: transform 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s; */
   transition: height 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s,

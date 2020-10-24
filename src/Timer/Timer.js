@@ -96,7 +96,7 @@ const Timer = ({
   };
 
   const handleFiveSecHelperClicked = () => {
-    if (!fiveSecHelperIsClicked && runningTime <= 20000 && count > 25) {
+    if (!fiveSecHelperIsClicked && runningTime <= 30000 && count > 25) {
       setFiveSecHelperIsClicked(true);
     }
   };
@@ -125,7 +125,7 @@ const Timer = ({
           </FindBtn>
           <FiveSecBtn
             onClick={handleFiveSecHelperClicked}
-            show={!fiveSecHelperIsClicked && runningTime <= 20000 && count > 25}
+            show={!fiveSecHelperIsClicked && runningTime <= 30000 && count > 25}
           >
             -5 Sec
           </FiveSecBtn>
