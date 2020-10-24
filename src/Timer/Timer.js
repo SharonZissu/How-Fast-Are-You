@@ -50,19 +50,16 @@ const Timer = ({
         let color;
         let animalName;
         if (checkAverage <= 0.6) {
-          color = "purple";
           animalName = "chita";
-        } else if (checkAverage <= 0.9) {
-          color = "yellow";
+        } else if (checkAverage <= 0.8) {
           animalName = "gnu";
-        } else if (checkAverage <= 1.2) {
-          color = "blue";
+        } else if (checkAverage <= 1) {
           animalName = "horse";
-        } else if (checkAverage <= 1.6) {
-          color = "green";
+        } else if (checkAverage <= 1.3) {
+          animalName = "elephant";
+        } else if (checkAverage <= 1.7) {
           animalName = "sloth";
         } else {
-          color = "brown";
           animalName = "turtle";
         }
         setAnimal(color);
@@ -141,11 +138,11 @@ const Timer = ({
           />
           <FinishFlag src={require("../images/finish-flag.png")} />
         </AnimateContainer>
-        <Modal
+        {/* <Modal
           show={gameFinish}
           runningTime={runningTime}
           fiveSecHelperIsClicked={fiveSecHelperIsClicked}
-        />
+        /> */}
       </TimerContainer>
     </>
   );

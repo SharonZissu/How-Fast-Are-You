@@ -9,13 +9,18 @@ const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
   if (runningTime <= 30000) {
     imgName = require(`../images/chita.jpg`);
     title = "Congratulations! You are the fastest! Cheetah!";
-  } else if (runningTime <= 45000) {
+  } else if (runningTime <= 40000) {
     imgName = require(`../images/gnu.jpg`);
     title = "Wow! You are fast! Gnu!";
-  } else if (runningTime <= 60000) {
+  } else if (runningTime <= 50000) {
     imgName = require(`../images/horse.jpg`);
     title = "nice speed! Horse!";
-  } else if (runningTime <= 80000) {
+  }
+  // else if (runningTime <= 65000) {
+  //   imgName = require(`../images/elephant.jpg`);
+  //   title = "nice speed! Elephant!";
+  // }
+  else if (runningTime <= 85000) {
     imgName = require(`../images/sloth.jpg`);
     title = "You can do better! Sloth!";
   } else {
