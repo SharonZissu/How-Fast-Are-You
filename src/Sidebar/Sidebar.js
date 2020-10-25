@@ -56,18 +56,18 @@ const Sidebar = ({ type }) => {
               touch.
             </P>
             <P>
-              You have 2 helpers buttons that you can use only one time in each
+              You have 2 help buttons that you can use only one time in each
               round:
             </P>
             <P>
-              1. If you stuck, the 'Find' helper helps you to find the next
-              number you need to touch. you have
+              1. If you get stuck, the <FindSpan>FIND</FindSpan> button helps
+              you to find the next number you need to touch.
             </P>
             <P>
               2. If you managed to touch the first 25 numbers in less than 30
-              seconds, the button opens and stays open until you reach a total
-              of 30 seconds. With its help, you can download from your time 5
-              seconds.
+              seconds, the <Sec5Span>-5 SEC</Sec5Span> button opens and stays
+              open until you reach a total of 30 seconds. With its help 5
+              seconds will be substracted from your time.
             </P>
           </RulesDiv>
         )}
@@ -91,8 +91,11 @@ const Container = styled.div`
   top: ${({ type }) => (type === "times" ? "23%" : "15%")};
   right: 0;
   /* transition: transform 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s; */
-  transition: height 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s,
+  /* transition: height 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s,
+    box-shadow 0.5s 1s; */
+  transition: height 0.4s cubic-bezier(1, 0, 0, 1) 0.5s, width 0.5s,
     box-shadow 0.5s 1s;
+
   overflow: hidden;
   box-shadow: ${({ clicked }) =>
     clicked ? "0 1rem 2rem rgba(0, 0, 0, 0.4)" : "none"};
@@ -154,7 +157,7 @@ const Time = styled.label`
 
 const RulesDiv = styled.div`
   padding: 1rem;
-  padding-right: 2.5rem;
+  padding-right: 2.2rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -168,4 +171,17 @@ const P = styled.p`
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
+`;
+
+const Span = styled.span`
+  padding: 0.1rem 0.25rem;
+  border-radius: 3px;
+`;
+
+const FindSpan = styled(Span)`
+  background-color: #686f87;
+`;
+
+const Sec5Span = styled(Span)`
+  background-color: #438c4c;
 `;

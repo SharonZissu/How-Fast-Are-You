@@ -44,10 +44,16 @@ const Timer = ({
       averageTimer.current = setInterval(() => {
         console.log("count", count);
         console.log("runningTime", runningTime);
-        setAverage((runningTime / 1000).toFixed(2) / count);
-        let checkAverage = (runningTime / 1000).toFixed(2) / count;
+        let checkAverage;
+        if (fiveSecHelperIsClicked) {
+          setAverage(((runningTime - 5000) / 1000).toFixed(2) / count);
+          checkAverage = ((runningTime - 5000) / 1000).toFixed(2) / count;
+        } else {
+          setAverage((runningTime / 1000).toFixed(2) / count);
+          checkAverage = (runningTime / 1000).toFixed(2) / count;
+        }
+
         console.log("checkAverage:", checkAverage);
-        let color;
         let animalName;
         if (checkAverage <= 0.6) {
           animalName = "chita";
@@ -62,7 +68,6 @@ const Timer = ({
         } else {
           animalName = "turtle";
         }
-        setAnimal(color);
         setAnimalName(animalName);
       }, 50);
     }
@@ -70,7 +75,7 @@ const Timer = ({
     return () => {
       clearInterval(averageTimer.current);
     };
-  }, [count]);
+  }, [count, fiveSecHelperIsClicked]);
   // }, [count, runningTime]);
 
   const formatTime = (t) => {
