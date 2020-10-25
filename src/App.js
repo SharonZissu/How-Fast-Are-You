@@ -27,7 +27,7 @@ function App() {
   const [cells, setCells] = useState([]);
   const [endCells, setEndingCells] = useState([]);
   const [btnClicked, setBtnClicked] = useState(false);
-  const [gameFinish, setGameFinish] = useState(false);
+  const [gameFinish, setGameFinish] = useState(true);
   const [indexClicked, setIndexClicked] = useState();
   const [findHelperIsClicked, setFindHelperIsClicked] = useState(false);
   const [findHelperIndex, setFindHelperIndex] = useState(-1);

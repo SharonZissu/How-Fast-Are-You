@@ -38,7 +38,7 @@ const Sidebar = ({ type }) => {
           <>
             <List clicked={timesBarClicked}>
               {animals.map((animal) => (
-                <AnimalItem>
+                <AnimalItem key={animal.name}>
                   <Img src={require(`../images/${animal.name}-logo.png`)} />
                   <Time>{animal.time}</Time>
                 </AnimalItem>

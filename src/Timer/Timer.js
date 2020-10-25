@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 import React, { useEffect, useState, useRef } from "react";
 import styled, { css, keyframes } from "styled-components";
 import Modal from "../Modal/Modal";
@@ -10,15 +11,15 @@ const Timer = ({
   findHelperIsClicked,
   count,
 }) => {
-  const [runningTime, setRunningTime] = useState(0);
+  const [runningTime, setRunningTime] = useState(1);
   const [fiveSecHelperIsClicked, setFiveSecHelperIsClicked] = useState(false);
   const [average, setAverage] = useState(0);
   const [animal, setAnimal] = useState("");
   const [animalName, setAnimalName] = useState("chita");
   let averageTimer = useRef(null);
-  let animalsTimer = useRef(null);
+  // let animalsTimer = useRef(null);
   let timer = useRef(null);
-  let restart = useRef(null);
+  // let restart = useRef(null);
   useEffect(() => {
     if (btnClicked) {
       //   console.log("here in if..");
@@ -26,7 +27,7 @@ const Timer = ({
       timer.current = setInterval(() => {
         // console.log(((Date.now() - startTime) / 1000).toFixed(2) / count);
         setRunningTime(Date.now() - startTime);
-        let average = ((Date.now() - startTime) / 1000).toFixed(2) / count;
+        // let average = ((Date.now() - startTime) / 1000).toFixed(2) / count;
         // console.log(average);
       }, 50);
     } else {
@@ -40,10 +41,10 @@ const Timer = ({
   }, [btnClicked]);
 
   useEffect(() => {
-    if (btnClicked) {
+    if (btnClicked || count === 51) {
       averageTimer.current = setInterval(() => {
-        console.log("count", count);
-        console.log("runningTime", runningTime);
+        // console.log("count", count);
+        // console.log("runningTime", runningTime);
         let checkAverage;
         if (fiveSecHelperIsClicked) {
           setAverage(((runningTime - 5000) / 1000).toFixed(2) / count);
@@ -53,7 +54,7 @@ const Timer = ({
           checkAverage = (runningTime / 1000).toFixed(2) / count;
         }
 
-        console.log("checkAverage:", checkAverage);
+        // console.log("checkAverage:", checkAverage);
         let animalName;
         if (checkAverage <= 0.6) {
           animalName = "chita";
@@ -90,14 +91,15 @@ const Timer = ({
     clearInterval(timer.current);
     setFiveSecHelperIsClicked(false);
     setAnimalName("chita");
+    setRunningTime(0.0);
     handleRestartClicked();
-    if (gameFinish) {
-      restart.current = setTimeout(() => {
-        setRunningTime(0.0);
-      }, 1000);
-    } else {
-      setRunningTime(0.0);
-    }
+    // if (gameFinish) {
+    //   restart.current = setTimeout(() => {
+    //     setRunningTime(0.0);
+    //   }, 1000);
+    // } else {
+    //   setRunningTime(0.0);
+    // }
   };
 
   const handleFiveSecHelperClicked = () => {
@@ -143,11 +145,11 @@ const Timer = ({
           />
           <FinishFlag src={require("../images/finish-flag.png")} />
         </AnimateContainer>
-        {/* <Modal
+        <Modal
           show={gameFinish}
           runningTime={runningTime}
           fiveSecHelperIsClicked={fiveSecHelperIsClicked}
-        /> */}
+        />
       </TimerContainer>
     </>
   );
