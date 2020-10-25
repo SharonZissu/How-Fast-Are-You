@@ -41,10 +41,21 @@ const Timer = ({
   }, [btnClicked]);
 
   useEffect(() => {
-    if (btnClicked || count === 51) {
+    if (count === 51) {
+      checkEndAnimal(runningTime);
+    }
+    if (btnClicked) {
+      //|| count === 51
+      let animalName;
+
+      if (count === 50) {
+        // if (fiveSecHelperIsClicked) {
+        //   time = time - 5000;
+        // }
+        return;
+      }
+      console.log("Here in useEffect, count is:", count);
       averageTimer.current = setInterval(() => {
-        // console.log("count", count);
-        // console.log("runningTime", runningTime);
         let checkAverage;
         if (fiveSecHelperIsClicked) {
           setAverage(((runningTime - 5000) / 1000).toFixed(2) / count);
@@ -54,8 +65,8 @@ const Timer = ({
           checkAverage = (runningTime / 1000).toFixed(2) / count;
         }
 
-        // console.log("checkAverage:", checkAverage);
-        let animalName;
+        console.log("checkAverage:", checkAverage);
+
         if (checkAverage <= 0.6) {
           animalName = "chita";
         } else if (checkAverage <= 0.8) {
@@ -77,7 +88,25 @@ const Timer = ({
       clearInterval(averageTimer.current);
     };
   }, [count, fiveSecHelperIsClicked]);
-  // }, [count, runningTime]);
+
+  const checkEndAnimal = () => {
+    let animalName;
+    if (runningTime <= 30000) {
+      animalName = "chita";
+    } else if (runningTime <= 40000) {
+      animalName = "gnu";
+    } else if (runningTime <= 50000) {
+      animalName = "horse";
+    } else if (runningTime <= 65000) {
+      animalName = "elephant";
+    } else if (runningTime <= 85000) {
+      animalName = "sloth";
+    } else {
+      animalName = "turtle";
+    }
+    setAnimalName(animalName);
+    return;
+  };
 
   const formatTime = (t) => {
     if (!fiveSecHelperIsClicked) {

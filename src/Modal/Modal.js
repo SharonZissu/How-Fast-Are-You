@@ -29,13 +29,14 @@ const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
           ...newArr,
           { time: runningTime, animal: checkWhichAnimal(runningTime) },
         ]);
-      } else if (top5results.length == 5) {
+      } else if (top5results.length >= 5) {
         // console.log(top5results);
         // let isCurrestResultBetter = false;
         top5results.push(runningTime);
         top5results.sort();
-        top5results.slice(0, 5);
-        localStorage.setItem("top5results", JSON.stringify(top5results));
+        const copy = top5results.slice(0, 5);
+        console.log(copy);
+        localStorage.setItem("top5results", JSON.stringify(copy));
 
         const sortedArray = [];
         for (let i = 0; i < 5; i++) {
