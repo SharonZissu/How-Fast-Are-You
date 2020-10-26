@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { BIG_WIDTH_SCREEN } from "../../styles/variables";
 
 const AnimateAnimals = ({ animalName, count }) => {
   return (
@@ -22,6 +23,12 @@ const Container = styled.div`
   background-image: url(${require("../../images/field.png")});
   background-size: 100% 100%;
   position: relative;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    order: -1;
+    margin-top: 0;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
 `;
 
 const AnimaleMoving = styled.img`

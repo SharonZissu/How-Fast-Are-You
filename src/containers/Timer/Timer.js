@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext, useMemo } from "react";
 import styled, { css } from "styled-components";
 import { showFiveSec } from "../../styles/keyframes";
-
+import { formatTime } from "../../utills";
+import { TimerContext } from "../../timer-context";
+import { BIG_WIDTH_SCREEN } from "../../styles/variables";
 //components
 import TopScores from "../../components/TopScores/TopScores";
 import Buttons from "../../components/Buttons/Buttons";
@@ -15,26 +17,11 @@ const Timer = ({
   handleFindHelperClicked,
   findHelperIsClicked,
 }) => {
-  const [runningTime, setRunningTime] = useState(1);
+  // const [runningTime, setRunningTime] = useState(1);
   const [fiveSecHelperIsClicked, setFiveSecHelperIsClicked] = useState(false);
   const [animalName, setAnimalName] = useState("chita");
+  const { timer, runningTime, setRunningTime } = useContext(TimerContext);
   let averageTimer = useRef(null);
-  let timer = useRef(null);
-
-  useEffect(() => {
-    //useEffect for the timer
-    if (gameStart) {
-      const startTime = Date.now();
-      timer.current = setInterval(() => {
-        setRunningTime(Date.now() - startTime);
-      }, 50);
-    } else {
-      clearInterval(timer.current);
-    }
-    return () => {
-      clearInterval(timer.current);
-    };
-  }, [gameStart]);
 
   useEffect(() => {
     //useEffect for the animals animation
@@ -101,14 +88,6 @@ const Timer = ({
     setAnimalName(animalName);
   };
 
-  const formatTime = (t) => {
-    if (!fiveSecHelperIsClicked) {
-      return (t / 1000).toFixed(2);
-    } else {
-      return (t / 1000 - 5).toFixed(2);
-    }
-  };
-
   const handleRestart = () => {
     setRunningTime(0.0);
     clearInterval(timer.current);
@@ -124,32 +103,30 @@ const Timer = ({
   };
 
   return (
-    <>
-      <TimerContainer animate={fiveSecHelperIsClicked}>
-        <TimerTime>{formatTime(runningTime)}</TimerTime>
-        <NextNumberCircle showCount={count === 51 ? false : true}>
-          {count}
-        </NextNumberCircle>
-        <ClockImg src={require("../../images/clock.png")} alt="Timer" />
-        <Buttons
-          handleRestart={handleRestart}
-          handleFindHelperClicked={handleFindHelperClicked}
-          findHelperIsClicked={findHelperIsClicked}
-          handleFiveSecHelperClicked={handleFiveSecHelperClicked}
+    <TimerContainer animate={fiveSecHelperIsClicked}>
+      <TimerTime>{formatTime(runningTime, fiveSecHelperIsClicked)}</TimerTime>
+      <NextNumberCircle showCount={count === 51 ? false : true}>
+        {count}
+      </NextNumberCircle>
+      <ClockImg src={require("../../images/clock.png")} alt="Timer" />
+
+      <Buttons
+        handleRestart={handleRestart}
+        handleFindHelperClicked={handleFindHelperClicked}
+        findHelperIsClicked={findHelperIsClicked}
+        handleFiveSecHelperClicked={handleFiveSecHelperClicked}
+        fiveSecHelperIsClicked={fiveSecHelperIsClicked}
+        count={count}
+      />
+
+      <AnimateAnimals animalName={animalName} count={count} />
+      {gameFinish && (
+        <TopScores
+          show={gameFinish}
           fiveSecHelperIsClicked={fiveSecHelperIsClicked}
-          runningTime={runningTime}
-          count={count}
         />
-        <AnimateAnimals animalName={animalName} count={count} />
-        {gameFinish && (
-          <TopScores
-            show={gameFinish}
-            runningTime={runningTime}
-            runningTimeDisplay={formatTime(runningTime)}
-          />
-        )}
-      </TimerContainer>
-    </>
+      )}
+    </TimerContainer>
   );
 };
 
@@ -162,6 +139,11 @@ const TimerContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    margin-top: 17rem;
+    align-items: flex-start;
+  }
 
   &::after {
     content: "-5:00";
@@ -184,10 +166,12 @@ const ClockImg = styled.img`
   width: 17rem;
   margin-top: 2rem;
 
-  @media (min-width: 600px) {
-    height: 60rem;
-    width: 60rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    height: 20rem;
+    width: 20rem;
     background-color: transparent;
+    margin-left: 10%;
+    margin-top: 1.4rem;
   }
 `;
 
@@ -197,6 +181,12 @@ const TimerTime = styled.label`
   top: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    left: 14rem;
+    bottom: 0;
+    top: 56%;
+    transform: none;
+  }
 `;
 
 const NextNumberCircle = styled.label`

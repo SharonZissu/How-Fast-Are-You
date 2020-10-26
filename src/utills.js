@@ -17,3 +17,16 @@ export const animals = [
   { name: "sloth", time: "<= 85 Seconds" },
   { name: "turtle", time: "> 85 Seconds" },
 ];
+
+export const formatTime = (t, fiveSecHelperIsClicked) => {
+  console.log("fiveSecHelperIsClicked", fiveSecHelperIsClicked);
+  console.log("t", t);
+  if (!fiveSecHelperIsClicked) {
+    console.log("A");
+    return (t / 1000).toFixed(2);
+  } else {
+    console.log("B");
+
+    return (t / 1000 - 5).toFixed(2);
+  }
+};

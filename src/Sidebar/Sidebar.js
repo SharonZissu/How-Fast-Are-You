@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { animals } from "../utills";
+import { BIG_WIDTH_SCREEN } from "../styles/variables";
 
 //context
 import { SidebarContext } from "../sidebar-context";
@@ -88,6 +89,19 @@ const Container = styled.div`
   overflow: hidden;
   box-shadow: ${({ clicked }) =>
     clicked ? "0 1rem 2rem rgba(0, 0, 0, 0.4)" : "none"};
+
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    width: 45%;
+    background-color: red;
+    right: ${({ type }) => (type === "times" ? "1rem" : "none")};
+    left: ${({ type }) => (type === "rules" ? "1rem" : "none")};
+    top: 10rem;
+    height: 15rem;
+    background-color: #eee;
+    border: 2px dashed black;
+    outline-offset: 1px;
+    outline: 3px solid orange;
+  }
 `;
 
 const Label = styled.label`
@@ -111,6 +125,12 @@ const Label = styled.label`
 
   /* Opera */
   -o-transform: rotate(-90deg);
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    /* opacity: 0; */
+    transform: none;
+    position: relative;
+    top: 0;
+  }
 `;
 
 const List = styled.ul`
@@ -122,6 +142,17 @@ const List = styled.ul`
   opacity: ${({ clicked }) => (clicked ? "1" : "0")};
   transition: all 0.4s 0.8s;
   padding-right: 0;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    opacity: 1;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    padding: 0.2rem 0.6rem;
+    height: 100%;
+    padding-top: 0;
+  }
 `;
 
 const AnimalItem = styled.li`
@@ -132,15 +163,25 @@ const AnimalItem = styled.li`
   &:not(:last-child) {
     margin-bottom: 0.4rem;
   }
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    width: 50%;
+  }
 `;
 
 const Img = styled.img`
   height: 4.5rem;
   width: 7rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    height: 2rem;
+    width: 4rem;
+  }
 `;
 
 const Time = styled.label`
   font-size: 1.7rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    font-size: 1rem;
+  }
 `;
 
 const RulesDiv = styled.div`
@@ -152,12 +193,24 @@ const RulesDiv = styled.div`
   justify-content: center;
   opacity: ${({ clicked }) => (clicked ? "1" : "0")};
   transition: all 0.4s 0.8s;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    opacity: 1;
+    padding: 0.7rem;
+    justify-content: flex-start;
+    height: auto;
+  }
 `;
 
 const P = styled.p`
   font-size: 1.1rem;
   &:not(:last-child) {
     margin-bottom: 1rem;
+    @media (min-width: ${BIG_WIDTH_SCREEN}) {
+      margin-bottom: 0.4rem;
+    }
+  }
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    font-size: 0.65rem;
   }
 `;
 

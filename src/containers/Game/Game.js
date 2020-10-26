@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { v4 as uuid_v4 } from "uuid";
 import { shuffle } from "../../utills";
+import { TimerProvider } from "../../timer-context";
+import { BIG_WIDTH_SCREEN } from "../../styles/variables";
 
 //components
 import Timer from "../Timer/Timer";
@@ -149,14 +151,16 @@ function Game() {
   return (
     <GameContainer>
       <Board>{renderedCells}</Board>
-      <Timer
-        count={count}
-        gameStart={gameStart}
-        gameFinish={gameFinish}
-        handleRestartBtnClicked={handleRestartBtnClicked}
-        handleFindHelperClicked={handleFindHelperClicked}
-        findHelperIsClicked={findHelperIsClicked}
-      />
+      <TimerProvider gameStart={gameStart}>
+        <Timer
+          count={count}
+          gameStart={gameStart}
+          gameFinish={gameFinish}
+          handleRestartBtnClicked={handleRestartBtnClicked}
+          handleFindHelperClicked={handleFindHelperClicked}
+          findHelperIsClicked={findHelperIsClicked}
+        />
+      </TimerProvider>
     </GameContainer>
   );
 }
@@ -165,24 +169,27 @@ export default Game;
 
 const GameContainer = styled.div`
   display: flex;
-  width: 100%;
-  height: 100%;
-  @media (max-width: 600px) {
-    flex-direction: column;
+  flex-direction: column;
+  padding: 1rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    /* flex-direction: row; */
+    width: 100%;
+    height: 100%;
     padding: 1rem;
   }
 `;
 
 const Board = styled.div`
-  width: 50%;
-  height: 75vh;
-  @media (max-width: 600px) {
-    height: 50vh;
-    order: 1;
-  }
+  height: 50vh;
+  order: 1;
+  width: 100%;
 
   vertical-align: middle;
-  @media (max-width: 600px) {
-    width: 100%;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    width: 45%;
+    height: 43%;
+    position: absolute;
+    right: 1rem;
+    bottom: 0.1rem;
   }
 `;

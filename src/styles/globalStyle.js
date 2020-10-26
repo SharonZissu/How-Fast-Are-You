@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { BIG_WIDTH_SCREEN, SMALL_WIDTH_SCREEN } from "./variables";
 
 export const GlobalStyle = createGlobalStyle`
 * {
@@ -15,6 +16,12 @@ html {
   box-sizing: border-box;
   font-size: 62.5%; //1rem = 10px
   min-height: 100vh;
+  @media (max-width: ${SMALL_WIDTH_SCREEN}) {
+    font-size: 50%;
+  }
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    font-size: 80%;
+  }
 }
 
 body {
@@ -22,4 +29,6 @@ body {
   line-height: 1.6;
   color: black;
 }
+
+
 `;

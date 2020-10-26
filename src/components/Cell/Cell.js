@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { flash, pulsate } from "../../styles/keyframes";
+import { BIG_WIDTH_SCREEN } from "../../styles/variables";
 
 const Cell = ({
   cell: { number, changed, finish },
@@ -31,7 +32,7 @@ const StyledButton = styled.button`
   visibility: ${({ finish }) => (finish ? "hidden" : "visible")};
   border: 2px solid white;
   padding: auto;
-  font-size: 4rem;
+  font-size: 3rem;
   font-family: inherit;
   position: relative;
   vertical-align: middle;
@@ -61,7 +62,6 @@ const StyledButton = styled.button`
     animation: ${pulsate} 1s 3;
   }
 
-  @media (max-width: 600px) {
-    font-size: 3rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
   }
 `;

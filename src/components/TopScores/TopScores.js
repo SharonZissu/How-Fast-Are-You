@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { v4 as uuid_v4 } from "uuid";
+import { TimerContext } from "../../timer-context";
+import { formatTime } from "../../utills";
+import { SMALL_WIDTH_SCREEN } from "../../styles/variables";
 
-const TopScores = ({ show, runningTimeDisplay }) => {
+const TopScores = ({ show, fiveSecHelperIsClicked }) => {
   const [top5, setTop5] = useState([]);
+  const { runningTime } = useContext(TimerContext);
+
   useEffect(() => {
+    // console.log("runningTime", runningTime);
+    const runningTimeDisplay = formatTime(runningTime, fiveSecHelperIsClicked);
+    // console.log("runningTimeDisplay", runningTimeDisplay);
+
     if (show) {
       const top5results = JSON.parse(localStorage.getItem("top5results"));
       if (!top5results) {
@@ -78,7 +87,7 @@ const TopScores = ({ show, runningTimeDisplay }) => {
             <AnimalPicture
               src={require(`../../images/${res.animal}-logo.png`)}
             />
-            <ResultTime>{parseFloat(res.time)}</ResultTime>
+            <ResultTime>{res.time}</ResultTime>
           </ResultItem>
         ))}
       </List>
@@ -121,6 +130,9 @@ const List = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 1rem;
+  @media (max-width: ${SMALL_WIDTH_SCREEN}) {
+    font-size: 2rem;
+  }
 `;
 
 const ResultItem = styled.li`

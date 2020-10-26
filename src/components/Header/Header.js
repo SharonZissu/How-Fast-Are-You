@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { BIG_WIDTH_SCREEN, SMALL_WIDTH_SCREEN } from "../../styles/variables";
 
 const Header = () => {
   return (
@@ -20,18 +21,20 @@ const Container = styled.div`
   overflow: hidden;
   background-color: #f68d69;
   padding: 2rem;
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    padding: 1rem;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 6rem;
-  @media (max-width: 600px) {
-    font-size: 3.2rem;
+  font-size: 3.2rem;
+
+  @media (max-width: ${SMALL_WIDTH_SCREEN}) {
+    font-size: 2.9rem;
   }
 `;
 
 const SubTitle = styled.p`
-  @media (max-width: 600px) {
-    font-size: 1.3rem;
-    font-weight: 100;
-  }
+  font-size: 1.3rem;
+  font-weight: 100;
 `;
