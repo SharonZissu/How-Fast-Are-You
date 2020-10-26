@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { TimerContext } from "../../timer-context";
-import { BIG_WIDTH_SCREEN } from "../../styles/variables";
+import { BIG_WIDTH_SCREEN, SMALL_WIDTH_SCREEN } from "../../styles/variables";
 
 const Buttons = ({
   findHelperIsClicked,
@@ -41,9 +41,9 @@ const Container = styled.div`
 
 const Btn = styled.button`
   border: none;
-  padding: 1rem 2rem;
+  padding: 0.6rem 2rem;
   margin-right: 1rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-family: inherit;
   text-transform: uppercase;
   border-radius: 0.4rem;
@@ -59,9 +59,8 @@ const Btn = styled.button`
 `;
 
 const RestartBtn = styled(Btn)`
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   background-color: #f26767;
-  /* box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); */
   margin-right: 1rem;
   font-family: inherit;
   @media (min-width: ${BIG_WIDTH_SCREEN}) {
