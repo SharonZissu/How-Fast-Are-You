@@ -158,6 +158,11 @@ const TimerContainer = styled.div`
       css`
         ${showFiveSec} 1.5s linear
       `};
+
+    @media (min-width: ${BIG_WIDTH_SCREEN}) {
+      top: 40%;
+      left: 30%;
+    }
   }
 `;
 
@@ -184,7 +189,7 @@ const TimerTime = styled.label`
   @media (min-width: ${BIG_WIDTH_SCREEN}) {
     left: 14rem;
     bottom: 0;
-    top: 56%;
+    top: 57%;
     transform: none;
   }
 `;

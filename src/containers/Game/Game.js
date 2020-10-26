@@ -187,9 +187,10 @@ const Board = styled.div`
   vertical-align: middle;
   @media (min-width: ${BIG_WIDTH_SCREEN}) {
     width: 45%;
-    height: 43%;
+    height: 42%;
     position: absolute;
     right: 1rem;
     bottom: 0.1rem;
+    z-index: 800;
   }
 `;

@@ -40,6 +40,13 @@ const AnimaleMoving = styled.img`
     css`
         translateX(${count * 4}%) 
       `};
+
+  @media (min-width: ${BIG_WIDTH_SCREEN}) {
+    transform: ${({ count }) =>
+      css`
+        translateX(${count * 9}%) 
+      `};
+  }
 `;
 
 const FinishFlag = styled.img`
