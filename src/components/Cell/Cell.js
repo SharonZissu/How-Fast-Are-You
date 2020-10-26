@@ -1,16 +1,13 @@
-import React, { useRef } from "react";
-import styled, { keyframes, css } from "styled-components";
+import React from "react";
+import styled, { css } from "styled-components";
+import { flash, pulsate } from "../../styles/keyframes";
 
-const Button = ({
+const Cell = ({
   cell: { number, changed, finish },
   indexClicked,
   clicked,
-  count,
-  findHelperIsClicked,
   findHelperIndex,
 }) => {
-  //   console.log(cell);
-  console.log("indexClicked:", indexClicked);
   return (
     <StyledButton
       indexClicked={indexClicked + 1}
@@ -24,35 +21,7 @@ const Button = ({
   );
 };
 
-export default Button;
-
-const flash = keyframes`
-0% {
-    opacity: 1;
-}
-100% {
-    opacity: 0;
-}
-`;
-
-const pulsate = keyframes` 
-  0% {
-    transform: scale(1);
-    box-shadow: none;
-
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.25);
-    background-color: #686f87;
-    z-index: 5;
-    border: 2px solid black;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: none;
-  }
-`;
+export default Cell;
 
 const StyledButton = styled.button`
   width: 20%;
@@ -65,7 +34,6 @@ const StyledButton = styled.button`
   font-size: 4rem;
   font-family: inherit;
   position: relative;
-  /* font-family: inherit; */
   vertical-align: middle;
   &:focus {
     outline: none;
@@ -97,9 +65,3 @@ const StyledButton = styled.button`
     font-size: 3rem;
   }
 `;
-
-// const animate = css`
-// `
-// const complexMixin = css`
-//   color: ${props => (props.whiteColor ? 'white' : 'black')};
-// ` ``;

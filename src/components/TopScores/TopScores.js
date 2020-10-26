@@ -1,47 +1,48 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
+import { v4 as uuid_v4 } from "uuid";
+
+const TopScores = ({ show, runningTimeDisplay }) => {
   const [top5, setTop5] = useState([]);
   useEffect(() => {
     if (show) {
       const top5results = JSON.parse(localStorage.getItem("top5results"));
-      if (fiveSecHelperIsClicked) {
-        runningTime = runningTime - 5000;
-      }
-      // console.log("top5results FROM if(show)", top5results);
       if (!top5results) {
-        console.log("top5results FROM if(!top5results)", top5results);
-
-        setTop5([{ time: runningTime, animal: checkWhichAnimal(runningTime) }]);
-        localStorage.setItem("top5results", JSON.stringify([runningTime]));
-      } else if (top5results.length < 5) {
-        console.log("top5results FROM if(top5results.length < 5)", top5results);
+        setTop5([
+          {
+            time: parseFloat(runningTimeDisplay),
+            animal: checkWhichAnimal(runningTimeDisplay),
+          },
+        ]);
         localStorage.setItem(
           "top5results",
-          JSON.stringify([...top5results, runningTime])
+          JSON.stringify([parseFloat(runningTimeDisplay)])
         );
-        console.log(("TOP5:", top5));
-        const newArr = top5results.map((res) => ({
-          time: res,
-          animal: checkWhichAnimal(res),
-        }));
-        setTop5([
-          ...newArr,
-          { time: runningTime, animal: checkWhichAnimal(runningTime) },
-        ]);
+      } else if (top5results.length < 5) {
+        localStorage.setItem(
+          "top5results",
+          JSON.stringify([...top5results, parseFloat(runningTimeDisplay)])
+        );
+        const copy = [...top5results, parseFloat(runningTimeDisplay)];
+        copy.sort();
+        const newArr = copy.map((res) => {
+          return {
+            time: parseFloat(res),
+            animal: checkWhichAnimal(res),
+          };
+        });
+
+        setTop5([...newArr]);
       } else if (top5results.length >= 5) {
-        // console.log(top5results);
-        // let isCurrestResultBetter = false;
-        top5results.push(runningTime);
+        top5results.push(parseFloat(runningTimeDisplay));
         top5results.sort();
         const copy = top5results.slice(0, 5);
-        console.log(copy);
         localStorage.setItem("top5results", JSON.stringify(copy));
 
         const sortedArray = [];
         for (let i = 0; i < 5; i++) {
           sortedArray.push({
-            time: top5results[i],
+            time: parseFloat(top5results[i]),
             animal: checkWhichAnimal(top5results[i]),
           });
         }
@@ -49,22 +50,18 @@ const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
       }
     }
   }, [show]);
-  let animal;
 
   const checkWhichAnimal = (time) => {
-    console.log(time);
-    // if (fiveSecHelperIsClicked) {
-    //   time = time - 5000;
-    // }
-    if (time <= 30000) {
+    let animal;
+    if (time <= 30) {
       animal = "chita";
-    } else if (time <= 40000) {
+    } else if (time <= 40) {
       animal = "gnu";
-    } else if (time <= 50000) {
+    } else if (time <= 50) {
       animal = "horse";
-    } else if (time <= 65000) {
+    } else if (time <= 65) {
       animal = "elephant";
-    } else if (time <= 85000) {
+    } else if (time <= 85) {
       animal = "sloth";
     } else {
       animal = "turtle";
@@ -73,33 +70,31 @@ const Modal = ({ show, runningTime, fiveSecHelperIsClicked }) => {
   };
 
   return (
-    <ModalContainer show={show}>
+    <Container show={show}>
       <List>
         <Title>Your Top 5 Scores:</Title>
         {top5.map((res) => (
-          <ResultItem>
-            <AnimalPicture src={require(`../images/${res.animal}-logo.png`)} />
-            <ResultTime>{(res.time / 1000).toFixed(2)}</ResultTime>
+          <ResultItem key={uuid_v4()}>
+            <AnimalPicture
+              src={require(`../../images/${res.animal}-logo.png`)}
+            />
+            <ResultTime>{parseFloat(res.time)}</ResultTime>
           </ResultItem>
         ))}
       </List>
-    </ModalContainer>
+    </Container>
   );
 };
 
-export default Modal;
+export default TopScores;
 
-const ModalContainer = styled.div`
-  /* position: fixed; */
+const Container = styled.div`
   position: absolute;
   bottom: -100%;
   left: 0;
   height: 48vh;
   width: 99%;
   transition: all 1s ease-out;
-  /* opacity: 0; */
-  /* transform: ${({ show }) =>
-    show ? "translateY(0)" : "translateY(50rem)"}; */
   opacity: ${({ show }) => (show ? "1" : "0")};
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
   background-image: url(${({ imgName }) => imgName});
@@ -111,8 +106,6 @@ const ModalContainer = styled.div`
     background-size: 100% 55%;
     height: 45vh;
   }
-
-  /* transform: ${({ show }) => (show ? "block" : "none")}; */
 `;
 
 const List = styled.div`
@@ -148,13 +141,3 @@ const AnimalPicture = styled.img`
 const ResultTime = styled.label`
   font-size: 3rem;
 `;
-// const Img = styled.img`
-//   height: 50vh;
-//   width: 100%;
-//   transform: translateX(-20rem);
-// `;
-
-/* linear-gradient(
-      rgba(256, 256, 256, 0.5),
-      rgba(256, 256, 256, 0.5)
-    ), */

@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import Backdrop from "../Backdrop/Backdrop";
+import { animals } from "../utills";
+
+//context
 import { SidebarContext } from "../sidebar-context";
 
-const animals = [
-  { name: "chita", time: "<= 30 Seconds" },
-  { name: "gnu", time: "<= 40 Seconds" },
-  { name: "horse", time: "<= 50 Seconds" },
-  { name: "elephant", time: "<= 65 Seconds" },
-  { name: "sloth", time: "<= 85 Seconds" },
-  { name: "turtle", time: "> 85 Seconds" },
-];
+//components
+import Backdrop from "../components/Backdrop/Backdrop";
+
 const Sidebar = ({ type }) => {
   const {
     timesBarClicked,
@@ -81,21 +78,13 @@ export default Sidebar;
 const Container = styled.div`
   position: absolute;
   width: ${({ clicked }) => (clicked ? "80%" : "3rem")};
-  /* transform: ${({ clicked }) => (clicked ? "scaleY(4)" : "scaleY(1)")}; */
   height: ${({ clicked }) => (clicked ? "31rem" : "6rem")};
-  /* transform-origin: top; */
-
-  /* height: 6rem; */
   z-index: 500;
   background-color: ${({ type }) => (type === "times" ? "#f68d69" : "#f26767")};
   top: ${({ type }) => (type === "times" ? "23%" : "15%")};
   right: 0;
-  /* transition: transform 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s; */
-  /* transition: height 0.5s, width 0.4s cubic-bezier(1, 0, 0, 1) 0.5s,
-    box-shadow 0.5s 1s; */
   transition: height 0.4s cubic-bezier(1, 0, 0, 1) 0.5s, width 0.5s,
     box-shadow 0.5s 1s;
-
   overflow: hidden;
   box-shadow: ${({ clicked }) =>
     clicked ? "0 1rem 2rem rgba(0, 0, 0, 0.4)" : "none"};
@@ -109,7 +98,6 @@ const Label = styled.label`
   transform: rotate(-90deg) scaleY(1);
   transition: all 0.2s 1s;
   opacity: ${({ clicked }) => (clicked ? "0" : "1")};
-
   /* Legacy vendor prefixes that you probably don't need... */
 
   /* Safari */
