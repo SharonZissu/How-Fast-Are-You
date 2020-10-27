@@ -4,7 +4,7 @@ const TimerContext = createContext();
 const { Provider } = TimerContext;
 
 const TimerProvider = ({ children, gameStart }) => {
-  const [runningTime, setRunningTime] = useState(1);
+  const [runningTime, setRunningTime] = useState(0);
   let timer = useRef(null);
 
   useEffect(() => {

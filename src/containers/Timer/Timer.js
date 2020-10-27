@@ -183,7 +183,7 @@ const ClockImg = styled.img`
 const TimerTime = styled.label`
   font-size: 3rem;
   position: absolute;
-  top: 32%;
+  top: 33.5%;
   left: 50%;
   transform: translate(-50%, -50%);
   @media (min-width: ${BIG_WIDTH_SCREEN}) {

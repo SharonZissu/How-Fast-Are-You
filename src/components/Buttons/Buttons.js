@@ -59,7 +59,7 @@ const Btn = styled.button`
 `;
 
 const RestartBtn = styled(Btn)`
-  font-size: 2.2rem;
+  /* font-size: 2.2rem; */
   background-color: #f26767;
   margin-right: 1rem;
   font-family: inherit;
